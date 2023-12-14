@@ -1,0 +1,26 @@
+services:
+  backend:
+    restart: on-failure
+    build: ./backend
+    hostname: backend
+    volumes:
+      - type: bind
+        source: ./backend/pb_data
+        target: /pb/pb_data
+
+  frontend:
+    build: ./frontend
+    ports:
+    - '${APP_PORT}:80'
+    depends_on:
+    - backend
+    volumes:
+      - type: bind
+        source: ./frontend/media
+        target: /www/media
+    environment:
+      - APP_HOST=${APP_HOST}
+
+volumes:
+  pb_data:
+  
